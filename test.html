@@ -61,22 +61,19 @@
     function init() {
       if (window.DeviceOrientationEvent) {
         document.getElementById("doEvent").innerHTML = "DeviceOrientation";
-        // Listen for the deviceorientation event and handle the raw data
         window.addEventListener('deviceorientation', function(eventData) {
-          // gamma is the left-to-right tilt in degrees, where right is positive
+          
           var tiltLR = eventData.gamma;
-          
-          // beta is the front-to-back tilt in degrees, where front is positive
           var tiltFB = eventData.beta;
-          
-          // alpha is the compass direction the device is facing in degrees
           var dir = eventData.alpha
+         
           document.getElementById("doTiltLR").innerHTML = Math.round(tiltLR);
           document.getElementById("doTiltFB").innerHTML = Math.round(tiltFB);
           document.getElementById("doDirection").innerHTML = Math.round(dir);
-          // call to the node server
+        
           var socketio = io.connect("192.168.0.11:1337");
           socketio.emit("message_to_server", { tiltLR : Math.round(tiltLR), tiltFB : Math.round(tiltFB)*2, dir:Math.round(dir)});
+          
           }, false);
       } else {
         document.getElementById("doEvent").innerHTML = "Not supported on your device or browser.  Sorry."
