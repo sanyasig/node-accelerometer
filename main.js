@@ -10,19 +10,23 @@ var app = http.createServer(function (request, response) {
 	});
 }).listen(1337);
 
- //five.Board().on("ready", function() {
- 	var io = require('socket.io').listen(app);
-	//var servo = new five.Servo(process.argv[2] || 10);
-	//var servo2 = new five.Servo(process.argv[2] || 11);
-	
-	io.sockets.on('connection', function(socket) {
-		console.log(socket.id);
-		socket.on('message_to_server', function(data) {
-	    	//console.log(Math.abs(Math.ceil(170 * data.tiltLR - 180)));
-	    	//servo.to(data.tiltLR);
-	    	//servo2.to(data.tiltFB);
-	    	console.log(data);
-	    	io.sockets.emit("message_to_client",{ message: data["message"] });
+var pan;
+var tilt;
+var io = require('socket.io').listen(app);
+io.sockets.on('connection', function(socket) {
+	console.log(socket.id);
+	socket.on('message_to_server', function(data) {
+		pan = data.pan;
+		tilt = data.tilt;
+		console.log(data);
+		io.sockets.emit("message_to_client",{ message: data["message"] });
+
+	    	// send the pan/tilt info to the arduino 
+	    	five.Board().on("ready", function() {
+	    		var servo = new five.Servo(process.argv[2] || 10);
+	    		var servo2 = new five.Servo(process.argv[2] || 11);
+ 		
+	    	});
 	    });
-	});
-//});
+});
+
