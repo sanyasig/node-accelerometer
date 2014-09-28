@@ -91,7 +91,7 @@
      
       var socketio = io.connect("192.168.0.11:1337");
       if( (inrange_tilt > 10 && inrange_tilt < 170) && (inrange_pan > 10 && inrange_pan < 170)){
-        socketio.emit("message_to_server", { tiltLR : Math.round(inrange_tilt), tiltFB : Math.round(inrange_pan), dir:Math.round(dir)});
+        socketio.emit("message_to_server", { pan : Math.round(inrange_tilt), tilt : Math.round(inrange_pan), dir:Math.round(dir)});
       }
     }
 
