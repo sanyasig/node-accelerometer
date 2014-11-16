@@ -26,10 +26,12 @@
       -webkit-perspective: 300; perspective: 300;
     }
   </style>
-
 </head>
+
 <body>
   <div class="main">
+   <button type="button" id="light">Lights</button>
+
     <h2>Device Orientation</h2>
     <table>
       <tr>
@@ -52,8 +54,15 @@
   </div>
   
   <script src="/socket.io/socket.io.js"></script>
-  
-  <script type="text/javascript">
+<script src="//code.jquery.com/jquery-1.11.0.min.js"></script> 
+ <script type="text/javascript">
+    $(document).ready(function() {
+var socketio = io.connect("192.168.0.25:1337");
+     $('#light').click(function(){
+        socketio.emit("lights",{light:"toggle"});
+       });
+    });		
+
     init();
     var count = 0;
 
@@ -77,7 +86,10 @@
       } else {
         document.getElementById("doEvent").innerHTML = "Not supported on your device or browser.  Sorry."
       }
-    }
+   
+
+
+ }
     function process_and_send(pan, tilt, dir){
       
       var out_min = 10;
@@ -89,7 +101,7 @@
       var inrange_pan = (pan - pan_in_min) * (out_max - out_min) / (pan_in_max - pan_in_min) + out_min;
       var inrange_tilt = (tilt - tilt_in_min) * (out_max - out_min) / (tilt_in_max - tilt_in_min) + out_min;
      
-      var socketio = io.connect("192.168.0.11:1337");
+      var socketio = io.connect("192.168.0.25:1337");
       if( (inrange_tilt > 10 && inrange_tilt < 170) && (inrange_pan > 10 && inrange_pan < 170)){
         socketio.emit("message_to_server", { pan : Math.round(inrange_tilt), tilt : Math.round(inrange_pan), dir:Math.round(dir)});
       }
