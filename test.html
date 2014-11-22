@@ -56,8 +56,9 @@
   <script src="/socket.io/socket.io.js"></script>
 <script src="//code.jquery.com/jquery-1.11.0.min.js"></script> 
  <script type="text/javascript">
+ var socketio = io.connect("192.168.0.25:1337");
+
     $(document).ready(function() {
-var socketio = io.connect("192.168.0.25:1337");
      $('#light').click(function(){
         socketio.emit("lights",{light:"toggle"});
        });
@@ -101,7 +102,7 @@ var socketio = io.connect("192.168.0.25:1337");
       var inrange_pan = (pan - pan_in_min) * (out_max - out_min) / (pan_in_max - pan_in_min) + out_min;
       var inrange_tilt = (tilt - tilt_in_min) * (out_max - out_min) / (tilt_in_max - tilt_in_min) + out_min;
      
-      var socketio = io.connect("192.168.0.25:1337");
+      //var socketio = io.connect("192.168.0.25:1337");
       if( (inrange_tilt > 10 && inrange_tilt < 170) && (inrange_pan > 10 && inrange_pan < 170)){
         socketio.emit("message_to_server", { pan : Math.round(inrange_tilt), tilt : Math.round(inrange_pan), dir:Math.round(dir)});
       }
